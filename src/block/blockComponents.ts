@@ -1,3 +1,4 @@
+import { TranslatableEntity } from "../language/entity";
 
 
 type CustomBlockComponent = {
@@ -56,7 +57,7 @@ export type DefaultBlockComponent = {
     "minecraft:selection_box": MBC_Box | boolean
     "minecraft:crafting_table": MBC_CraftingTable
     "minecraft:destructible_by_explosion": MCB_DestructibleByExplosion | boolean
-    "minecraft:display_name": string,
+    "minecraft:display_name": string | TranslatableEntity,
     "minecraft:geometry": MCB_Geometry | string
     "minecraft:material_instances": MCB_MaterialInstance
     "minecraft:transformation": MCB_Transformation
