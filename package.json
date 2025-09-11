@@ -1,5 +1,5 @@
 {
-  "name": "npm",
+  "name": "mcboilerplate",
   "version": "1.0.1-beta.1",
   "main": "dist/index.cjs",
   "types": "dist/index.d.ts",
