@@ -31,7 +31,7 @@ export interface MinecraftBlock {
             menu_category?: {
                 category: string,
                 group: string,
-                is_hidden_in_commands: boolean
+                is_hidden_in_commands?: boolean
             },
             states?: MinecraftBlockStates,
             traits?: MinecraftBlockTraits,

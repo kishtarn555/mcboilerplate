@@ -23,6 +23,10 @@ export class ProjectManager {
         this.blocks.push(block);
     }
 
+    addTranslation(translation:TranslatableEntity) {
+        this.translations.push(translation);
+    }
+
     private solveTranslationKeys(target: any): any {
         if (Array.isArray(target)) {
             return target.map(item => this.solveTranslationKeys(item));
@@ -146,7 +150,7 @@ export class ProjectManager {
         
     }
 
-    * generateBlocks(): Generator<PathContentPair> {
+    private * generateBlocks(): Generator<PathContentPair> {
         for (const block of this.blocks) {            
             const fileName = block["minecraft:block"].description.identifier.split(":")[1];
 
@@ -158,12 +162,43 @@ export class ProjectManager {
         }
     }
 
-    * generateBehaviourPack(): Generator<PathContentPair> {        
+    private * generateBehaviourPack(): Generator<PathContentPair> {        
         yield * this.generateBlocks();
+    }
+
+    private * generateLangFiles(): Generator<PathContentPair> {
+        const languages: Set<string>  = new Set()
+        for (const translation of this.translations) {
+            for (const key in translation.translations) {
+                languages.add(key);
+            }
+        }
+
+        for (const language of languages) {
+            const path = `resourcepack/texts/${language}.lang`;
+            const content = [];
+             for (const translation of this.translations) {
+                if (language in translation.translations) {
+                    content.push(`${translation.translationKey}=${translation.translations[language]}`)
+                }
+            }
+            if (content.length === 0) {
+                continue;
+            }
+            yield {
+                content: content.join("\n"),
+                relativePath: path
+            };
+        }
+    }
+
+    private * generateResourcePack(): Generator<PathContentPair> {
+        yield * this.generateLangFiles();
     }
 
     * generateFiles() : Generator<PathContentPair> {        
         yield * this.generateManifests();
         yield* this.generateBehaviourPack();
+        yield* this.generateResourcePack();
     }
 }
