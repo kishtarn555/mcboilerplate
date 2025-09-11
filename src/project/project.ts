@@ -1,7 +1,7 @@
 import { MinecraftBlock } from "../block/customBlock";
 import { TranslatableEntity } from "../language/entity";
 
-import { BehaviourPackDefinition } from "../types/types";
+import { BehaviourPackDefinition, CustomModule, ProjectDefinition, ResourcePackDefinition, ServerModule } from "../types/types";
 
 type PathContentPair = {
     relativePath:string,
@@ -10,9 +10,9 @@ type PathContentPair = {
 export class ProjectManager {
     namespace: string;
     blocks: MinecraftBlock[]
-    definition: BehaviourPackDefinition
+    definition: ProjectDefinition
     translations: TranslatableEntity[]
-    constructor(namespace: string, definition: BehaviourPackDefinition) {
+    constructor(namespace: string, definition: ProjectDefinition) {
         this.namespace = namespace;
         this.blocks = [];
         this.translations = [];
@@ -47,17 +47,108 @@ export class ProjectManager {
         return target;
     }
 
-    generateManifest(): PathContentPair {
+    private getBehaviourPack(): BehaviourPackDefinition {
+        if (
+            this.definition.behaviour.version == null && this.definition.version == null
+        ) {
+            throw new Error("No version found in definition");
+        }
+        if (
+            this.definition.behaviour.min_engine_version == null && this.definition.min_engine_version == null
+        ) {
+            throw new Error("No min_engine_version found in definition");
+        }
+        const version = this.definition.behaviour.version ?? this.definition.version;
+        const dependencies: (ServerModule | CustomModule )[] = [
+            {
+                "module_name": "@minecraft/server",
+                "version": "2.1.0"
+            }
+        ];
+        if (this.definition.behaviourDependsOnResource) {
+            dependencies.push({
+                    uuid: this.definition.resource.uuid,
+			        version: this.definition.resource.version ?? this.definition.version
+            });
+        }
         return {
-            relativePath: "behaviourpack/manifest.json",
-            content: JSON.stringify(this.solveTranslationKeys(this.definition), null, 2)
-        };
+            format_version: 2,
+            header: {
+                name: this.definition.behaviour.name,
+                description: this.definition.behaviour.description,
+                uuid: this.definition.behaviour.uuid,
+                version: version,                
+                min_engine_version: this.definition.behaviour.min_engine_version ?? this.definition.min_engine_version
+            },
+            dependencies: dependencies,
+            modules: [
+                {
+                    type: "script",
+                    language: "javascript",
+                    description: "Script resources",
+                    entry: "scripts/main.js",
+                    version: version,
+                    uuid: this.definition.behaviour.script_uuid
+                },
+                {
+                    type: "data",
+                    uuid: this.definition.behaviour.data_uuid,
+                    version: version
+                }            
+            ]
+        }
+    }
+
+    private getResourcePack(): ResourcePackDefinition {
+        if (
+            this.definition.resource.version == null && this.definition.version == null
+        ) {
+            throw new Error("No version found in definition");
+        }
+        if (
+            this.definition.resource.min_engine_version == null && this.definition.min_engine_version == null
+        ) {
+            throw new Error("No min_engine_version found in definition");
+        }
+        const version = this.definition.resource.version ?? this.definition.version;
+        return {
+            format_version: 2,
+            header: {
+                name: this.definition.resource.name,
+                description: this.definition.resource.description,
+                uuid: this.definition.resource.uuid,
+                version: version,                
+                min_engine_version: this.definition.resource.min_engine_version ?? this.definition.min_engine_version
+            },
+            modules: [
+                {
+                    type: "resources",                    
+                    version: version,
+                    uuid: this.definition.resource.resource_uuid
+                }
+            ]
+        }
+    }
+
+    private generateManifest(): PathContentPair[] {
+        const behaviourPackDefinition = this.getBehaviourPack();
+        const resourcePackDefinition = this.getResourcePack();
+        return [
+            {
+                relativePath: "behaviourpack/manifest.json",
+                content: JSON.stringify(this.solveTranslationKeys(behaviourPackDefinition), null, 2)
+            },
+            {
+                relativePath: "resourcepack/manifest.json",
+                content: JSON.stringify(this.solveTranslationKeys(resourcePackDefinition), null, 2)
+            }
+        ];
         
     }
 
     * generateBehaviourPack(): Generator<PathContentPair> {        
         // write manifest
-        yield this.generateManifest();
+        yield * this.generateManifest();
     }
 
     * generateFiles() : Generator<PathContentPair> {        
