@@ -10,6 +10,19 @@ export interface MinecraftObjectable<T> {
     toMinecraftObject: () => T;
 }
 
+type ScriptModule = {
+    description: string,
+    language: string,
+    type: "script"
+    uuid: string,
+    version: [number, number, number],
+    entry: string
+}
+type DataModule = {
+    type: "data"
+    uuid: string,
+    version: [number, number, number],
+}
 export interface BehaviourPackDefinition {
     format_version: 2,
     header: {
@@ -19,7 +32,7 @@ export interface BehaviourPackDefinition {
         uuid:string,
         version: [number, number, number]
     },
-    modules: [],
+    modules: (ScriptModule | DataModule)[],
     dependencies: {
         module_name:string,
         version:string
