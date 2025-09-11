@@ -34,12 +34,10 @@ type LANGUAGE =  typeof LANGUAGE[keyof typeof LANGUAGE];
 
 
 export type TranslatableEntity = {
-    identifier: string
+    translationKey: string
     translations: {
-        translations: {
         en_US: string;
-    } & Partial<Record<Exclude<LANGUAGE, "en_US">, string>>;
-    } & {
+    } & Partial<Record<Exclude<LANGUAGE, "en_US">, string>> & {
         [custom: string]: string; // allow custom languages
     };
 }

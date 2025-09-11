@@ -13,11 +13,11 @@ export interface MinecraftObjectable<T> {
 export interface BehaviourPackDefinition {
     format_version: 2,
     header: {
-        name: string,
+        name: string | TranslatableEntity,
         description: string | TranslatableEntity,
         min_engine_version: [number, number, number],
         uuid:string,
-        version: [string, string, string]
+        version: [number, number, number]
     },
     modules: [],
     dependencies: {
