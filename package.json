@@ -1,6 +1,6 @@
 {
-  "name": "@kishtarn/mcboilerplate",
-  "version": "1.0.0",
+  "name": "npm",
+  "version": "1.0.1-beta.1",
   "main": "dist/main.js",
   "scripts": {
     "build": "tsc",
