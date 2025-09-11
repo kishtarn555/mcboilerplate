@@ -1,10 +1,6 @@
 import { TranslatableEntity } from "../language/entity";
 
 
-type CustomBlockComponent = {
-    [key: string]: any
-};
-
 type LocalizedString = string;
 
 /** A box-shaped component */

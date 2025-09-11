@@ -1,4 +1,4 @@
-import { MinecraftBlock } from "../block/customBlock";
+import { MinecraftBlock } from "../block/interface";
 import { TranslatableEntity } from "../language/entity";
 
 import { BehaviourPackDefinition, CustomModule, ProjectDefinition, ResourcePackDefinition, ServerModule } from "../types/types";
@@ -130,7 +130,7 @@ export class ProjectManager {
         }
     }
 
-    private generateManifest(): PathContentPair[] {
+    private generateManifests(): PathContentPair[] {
         const behaviourPackDefinition = this.getBehaviourPack();
         const resourcePackDefinition = this.getResourcePack();
         return [
@@ -146,12 +146,24 @@ export class ProjectManager {
         
     }
 
+    * generateBlocks(): Generator<PathContentPair> {
+        for (const block of this.blocks) {            
+            const fileName = block["minecraft:block"].description.identifier.split(":")[1];
+
+            yield {
+                content: JSON.stringify(block),
+                relativePath: `behaviourpack/blocks/generated/${fileName}`
+            };
+            
+        }
+    }
+
     * generateBehaviourPack(): Generator<PathContentPair> {        
-        // write manifest
-        yield * this.generateManifest();
+        yield * this.generateBlocks();
     }
 
     * generateFiles() : Generator<PathContentPair> {        
+        yield * this.generateManifests();
         yield* this.generateBehaviourPack();
     }
 }

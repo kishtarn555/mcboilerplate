@@ -1,11 +1,10 @@
 import { MOString } from "../types/types";
 import { MinecraftBlockComponent } from "./blockComponents";
-
-
+import { BlockStateValue } from "./blockState"
 
 type MinecraftBlockStates = {
-    [key: string]: string | number | boolean
-};
+    [key: string]: BlockStateValue
+}
 
 type MinecraftBlockTraits = {
     "minecraft:placement_direction"?: {
@@ -23,7 +22,8 @@ type MinecraftBlockTraits = {
     }
 }
 
-export type MinecraftBlock = {
+/** Defines the expected structure of a Minecraft Block JSON */
+export interface MinecraftBlock {
     format_version: "1.21.100",
     "minecraft:block": {
         description: {
