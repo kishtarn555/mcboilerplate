@@ -68,14 +68,11 @@ export class CustomBlockBuilder {
         return this.components[key];
     }
 
-    usePlugin(plugin: BlockPlugin | BlockPlugin[]) {
-        if (Array.isArray(plugin)) {
-            for (const instance of plugin) {
-                instance(this);
-            }
-            return this;
+    usePlugin(...plugins: BlockPlugin[]) {
+        for (const plugin of plugins) {
+            plugin(this);
         }
-        plugin(this);
         return this;
     }
+
 }
