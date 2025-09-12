@@ -156,7 +156,7 @@ export class ProjectManager {
 
             yield {
                 content: JSON.stringify(block),
-                relativePath: `behaviourpack/blocks/generated/${fileName}`
+                relativePath: `behaviourpack/blocks/generated/${fileName}.json`
             };
             
         }

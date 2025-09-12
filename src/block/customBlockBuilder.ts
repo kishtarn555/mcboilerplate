@@ -8,7 +8,7 @@ import { MinecraftBlock } from "./interface";
 
 
 /** This class is used to create blocks */
-export abstract class CustomBlockBuilder {
+export class CustomBlockBuilder {
     identifier: string
     permutations: BlockPermutation[]
     components: MinecraftBlockComponent[]
@@ -33,7 +33,7 @@ export abstract class CustomBlockBuilder {
             "minecraft:block": {
                 description: description,
                 //@ts-expect-error
-                components: this.components, // FIXME
+                components: {}, // FIXME
                 //@ts-ignore
                 permutations: this.permutations // FIXME
             },
@@ -41,6 +41,4 @@ export abstract class CustomBlockBuilder {
         }
 
     }
-    abstract getStates(): BlockState[];
-    abstract getPermutations() :BlockPermutation[];
 }
