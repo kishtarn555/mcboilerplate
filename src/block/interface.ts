@@ -36,7 +36,7 @@ export interface MinecraftBlock {
             states?: MinecraftBlockStates,
             traits?: MinecraftBlockTraits,
         }
-        components?: MinecraftBlockComponent 
+        components?: Partial<MinecraftBlockComponent> 
         permutations?: {
             condition: MOString
             components: MinecraftBlockComponent

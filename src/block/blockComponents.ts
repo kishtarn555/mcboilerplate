@@ -31,7 +31,7 @@ type MCB_MaterialInstance = {
         ambient_occlusion?: number
         face_dimming?: boolean
         isotropic?: boolean
-        render_method: "opaque" | "double_sided" | "blend" | "alpha_test" | "alpha_test_single_sided" | "blend_to_opaque" | "alpha_test_to_opaque" | "alpha_test_single_sided_to_opaque"
+        render_method?: "opaque" | "double_sided" | "blend" | "alpha_test" | "alpha_test_single_sided" | "blend_to_opaque" | "alpha_test_to_opaque" | "alpha_test_single_sided_to_opaque"
     } | string
 }
 
