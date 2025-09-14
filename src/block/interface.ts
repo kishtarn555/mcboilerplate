@@ -6,13 +6,13 @@ type MinecraftBlockStates = {
     [key: string]: BlockStateValue
 }
 
-type MinecraftBlockTraits = {
-    "minecraft:placement_direction"?: {
+export type MinecraftBlockTraits = {
+    "minecraft:placement_direction": {
         enabled_states: (
             "minecraft:cardinal_direction" |
             "minecraft:facing_direction"
         )[];
-        y_rotation_offset: number; // Number between 0 and 360
+        y_rotation_offset?: number; // Number between 0 and 360
     },
     "minecraft:placement_position": {
         enabled_states: (
@@ -21,6 +21,15 @@ type MinecraftBlockTraits = {
         )[];
     }
 }
+
+
+export type BlockTraitIdentifier = keyof MinecraftBlockTraits;
+
+
+export type BlockPermutation = {
+    condition: MOString
+    components: Partial<MinecraftBlockComponent>
+};
 
 /** Defines the expected structure of a Minecraft Block JSON */
 export interface MinecraftBlock {
@@ -34,13 +43,10 @@ export interface MinecraftBlock {
                 is_hidden_in_commands?: boolean
             },
             states?: MinecraftBlockStates,
-            traits?: MinecraftBlockTraits,
+            traits?: Partial<MinecraftBlockTraits>,
         }
         components?: Partial<MinecraftBlockComponent> 
-        permutations?: {
-            condition: MOString
-            components: MinecraftBlockComponent
-        }[]
+        permutations?: BlockPermutation[]
     },
 
 }

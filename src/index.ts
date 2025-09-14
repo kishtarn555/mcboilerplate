@@ -6,5 +6,6 @@ export {CustomBlockBuilder} from "./block/customBlockBuilder"
 export {
     BlockPlugin,
     primitiveBlock,
-    namedBlock
+    namedBlock,
+    rotatableBlocks
 } from './block/plugins/index';

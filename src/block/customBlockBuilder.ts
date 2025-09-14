@@ -1,8 +1,7 @@
 import { MOString } from "../types/types";
 import { BlockComponentIdentifier, DefaultBlockComponent, MinecraftBlockComponent } from "./blockComponents";
-import { BlockPermutation } from "./blockPermutation";
 import { BlockState } from "./blockState";
-import { MinecraftBlock } from "./interface";
+import { BlockPermutation, BlockTraitIdentifier, MinecraftBlock, MinecraftBlockTraits } from "./interface";
 import { BlockPlugin } from "./plugins/type";
 
 /** This class is used to create blocks */
@@ -11,12 +10,14 @@ export class CustomBlockBuilder {
     permutations: BlockPermutation[]
     components: Partial<MinecraftBlockComponent>;
     blockState: BlockState[]
+    traits: Partial<MinecraftBlockTraits>
 
 
     constructor(identifier: string) {
         this.identifier = identifier;
         this.permutations = [];
         this.blockState = [];
+        this.traits = {}
         this.components = {}
     }
 
@@ -24,7 +25,8 @@ export class CustomBlockBuilder {
     
     getBlock() :MinecraftBlock {
         const description = {
-            identifier: this.identifier
+            identifier: this.identifier,
+            traits: this.traits
         }
         return {
             format_version: "1.21.100",
@@ -74,5 +76,26 @@ export class CustomBlockBuilder {
         }
         return this;
     }
+
+    setTrait<K extends BlockTraitIdentifier>(
+        key: K,
+        value: MinecraftBlockTraits[K]
+    ): this;
+    
+    setTrait(key: string, value: any) {
+        this.traits[key] = value;
+        return this;
+    }
+
+    getTrait<K extends BlockTraitIdentifier>(
+        key: K
+    ): MinecraftBlockTraits[K] | undefined;
+
+
+    getTrait(key: string) {
+        return this.traits[key];
+    }
+
+    
 
 }

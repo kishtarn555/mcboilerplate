@@ -25,7 +25,7 @@ type MCB_Geometry = {
     uv_lock?: boolean
 }
 
-type MCB_MaterialInstance = {
+export type MCB_MaterialInstance = {
     [key: "*"|"north"|"south"|"west"|"east"|string]: {
         texture: string,
         ambient_occlusion?: number
