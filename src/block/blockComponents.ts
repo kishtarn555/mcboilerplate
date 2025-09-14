@@ -1,4 +1,5 @@
 import { TranslatableEntity } from "../language/entity";
+import { MOString } from "../types/types";
 
 
 type LocalizedString = string;
@@ -19,7 +20,7 @@ type MCB_DestructibleByExplosion = {
 }
 
 type MCB_Geometry = {
-    bone_visibility?: {[key:string]: boolean}
+    bone_visibility?: {[key:string]: boolean | MOString}
     culling?: string
     identifier: string,
     uv_lock?: boolean
