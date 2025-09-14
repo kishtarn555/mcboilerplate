@@ -1,7 +1,7 @@
 import { MOString } from "../types/types";
 import { BlockComponentIdentifier, DefaultBlockComponent, MinecraftBlockComponent } from "./blockComponents";
-import { BlockState } from "./blockState";
-import { BlockPermutation, BlockTraitIdentifier, MinecraftBlock, MinecraftBlockTraits } from "./interface";
+import { BlockState, BlockStateValue } from "./blockState";
+import { BlockPermutation, BlockTraitIdentifier, MinecraftBlock, MinecraftBlockStates, MinecraftBlockTraits } from "./interface";
 import { BlockPlugin } from "./plugins/type";
 
 /** This class is used to create blocks */
@@ -9,14 +9,14 @@ export class CustomBlockBuilder {
     identifier: string
     permutations: BlockPermutation[]
     components: Partial<MinecraftBlockComponent>;
-    blockState: BlockState[]
+    blockState: MinecraftBlockStates
     traits: Partial<MinecraftBlockTraits>
 
 
     constructor(identifier: string) {
         this.identifier = identifier;
         this.permutations = [];
-        this.blockState = [];
+        this.blockState = {};
         this.traits = {}
         this.components = {}
     }
@@ -26,7 +26,8 @@ export class CustomBlockBuilder {
     getBlock() :MinecraftBlock {
         const description = {
             identifier: this.identifier,
-            traits: this.traits
+            traits: this.traits,
+            states: this.blockState
         }
         return {
             format_version: "1.21.100",
@@ -96,6 +97,25 @@ export class CustomBlockBuilder {
         return this.traits[key];
     }
 
+    setState(
+        key: string,
+        value: BlockStateValue
+    ): this;
+    
+    setState(key: string, value: BlockStateValue) {
+        this.blockState[key] = value;
+        return this;
+    }
+
+    
+    getState(
+        key: string
+    ): BlockStateValue | undefined;
+
+
+    getState(key: string) {
+        return this.blockState[key];
+    }
     
 
 }

@@ -2,7 +2,7 @@ import { MOString } from "../types/types";
 import { MinecraftBlockComponent } from "./blockComponents";
 import { BlockStateValue } from "./blockState"
 
-type MinecraftBlockStates = {
+export type MinecraftBlockStates = {
     [key: string]: BlockStateValue
 }
 
