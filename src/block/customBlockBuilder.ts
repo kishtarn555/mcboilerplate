@@ -1,8 +1,11 @@
+import type { ProjectManager } from "../project/project";
 import { MOString } from "../types/types";
 import { BlockComponentIdentifier, DefaultBlockComponent, MinecraftBlockComponent } from "./blockComponents";
 import { BlockState, BlockStateValue } from "./blockState";
 import { BlockPermutation, BlockTraitIdentifier, MinecraftBlock, MinecraftBlockStates, MinecraftBlockTraits } from "./interface";
 import { BlockPlugin } from "./plugins/type";
+
+type BlockRegisterObserver = (block: CustomBlockBuilder, project: ProjectManager) => any;
 
 /** This class is used to create blocks */
 export class CustomBlockBuilder {
@@ -11,6 +14,7 @@ export class CustomBlockBuilder {
     components: Partial<MinecraftBlockComponent>;
     blockState: MinecraftBlockStates
     traits: Partial<MinecraftBlockTraits>
+    private blockRegistryObservers: BlockRegisterObserver[];
 
 
     constructor(identifier: string) {
@@ -19,6 +23,7 @@ export class CustomBlockBuilder {
         this.blockState = {};
         this.traits = {}
         this.components = {}
+        this.blockRegistryObservers = [];
     }
 
     
@@ -116,6 +121,15 @@ export class CustomBlockBuilder {
     getState(key: string) {
         return this.blockState[key];
     }
+
+    AddBlockRegisterObserver(observer:BlockRegisterObserver) {
+        this.blockRegistryObservers.push(observer);
+    }
     
+    NotifyBlockRegister(target: ProjectManager) {
+        for (const observer of this.blockRegistryObservers) {
+            observer(this, target);
+        }
+    }
 
 }

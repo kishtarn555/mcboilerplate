@@ -1,5 +1,4 @@
 import { MinecraftBlock } from "../block/interface";
-import { ExtensionProject } from "../extension/extension";
 import { TranslatableEntity } from "../language/entity";
 
 import { BehaviourPackDefinition, CustomModule, ProjectDefinition, ResourcePackDefinition, ServerModule } from "../types/types";
@@ -13,13 +12,11 @@ export class ProjectManager {
     blocks: MinecraftBlock[]
     definition: ProjectDefinition
     translations: TranslatableEntity[]
-    extensions: ExtensionProject[]
     constructor(namespace: string, definition: ProjectDefinition) {
         this.namespace = namespace;
         this.blocks = [];
         this.translations = [];
         this.definition = definition;
-        this.extensions = [];
     }
 
     addBlock(block: MinecraftBlock) {
@@ -30,9 +27,6 @@ export class ProjectManager {
         this.translations.push(translation);
     }
 
-    addExtension(extension: ExtensionProject) {
-        this.extensions.push(extension);
-    }
 
     private solveTranslationKeys(target: any): any {
         if (Array.isArray(target)) {
@@ -157,35 +151,7 @@ export class ProjectManager {
         
     }
 
-    private * generateExtensions(): Generator<PathContentPair> {
-        if (this.extensions.length === 0) {
-            return;
-        }
-        for (const extension of this.extensions) {
-            yield {
-                content: extension.code,
-                relativePath: `behaviourpack/src/extensions/${extension.name}.js`
-            };
-
-            yield * extension.files();
-        }
-        const names = this.extensions.map(ext=>ext.name);
-        let indexSrc = "";
-        for (const name of names) {
-            indexSrc += `import { ${name} } from "./${name}";\n`
-        }
-        indexSrc+="\nexport function initExtensions(){\n";
-        for (const name of names) {
-            indexSrc += `  ${name}?.init();\n`
-        }
-        indexSrc+="}\n";
-        yield {
-            content: indexSrc,
-            relativePath: "behaviourpack/src/extensions/index.js"
-        };
-
-
-    }
+    
 
     private * generateBlocks(): Generator<PathContentPair> {
         for (const block of this.blocks) {            
@@ -237,6 +203,5 @@ export class ProjectManager {
         yield * this.generateManifests();
         yield* this.generateBehaviourPack();
         yield* this.generateResourcePack();
-        yield * this.generateExtensions();
     }
 }
