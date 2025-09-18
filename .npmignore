@@ -1,8 +1,8 @@
 src/
 .gitignore
-jest.config.jest
+jest.config.js
 tsconfig.json
 dist/built/
-.gulpfile.js
+gulpfile.js
 rollup.config.js
 tests/

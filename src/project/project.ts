@@ -1,3 +1,4 @@
+import { CustomBlockBuilder } from "../block/customBlockBuilder";
 import { MinecraftBlock } from "../block/interface";
 import { TranslatableEntity } from "../language/entity";
 
@@ -19,8 +20,16 @@ export class ProjectManager {
         this.definition = definition;
     }
 
-    addBlock(block: MinecraftBlock) {
-        this.blocks.push(block);
+    addBlock(block: MinecraftBlock | CustomBlockBuilder) {
+        let resolved: MinecraftBlock;
+        if (block instanceof CustomBlockBuilder) {
+            resolved = block.getBlock();
+            // Call side artifacts the block might want to generate such as translations
+            block.NotifyBlockRegister(this);
+        } else {
+            resolved = block;
+        }
+        this.blocks.push(resolved);
     }
 
     addTranslation(translation:TranslatableEntity) {
