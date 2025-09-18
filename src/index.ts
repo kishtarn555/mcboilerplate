@@ -9,3 +9,7 @@ export {
     namedBlock,
     rotatableBlocks
 } from './block/plugins/index';
+
+export {
+    BlockPermutation
+} from "./block/interface"

@@ -1,3 +1,4 @@
+import { BlockPermutation } from "../interface";
 import { BlockPlugin } from "./type";
 
 
@@ -45,6 +46,22 @@ export const rotatableBlocks = (rotationOptions: RotationOptions ) :BlockPlugin 
                         }
                     })
                 }    
+            } else {
+                target.permutations = target.permutations.flatMap(
+                    perm => {
+                        
+                        return dirs.map(dir=>  ({
+                            condition: `(${perm.condition}) && q.block_state('${mode}') == '${dir}'`,                            
+                            components: {
+                                ...perm.components,
+                                "minecraft:transformation": {
+                                    ...perm.components["minecraft:transformation"],
+                                    rotation: rotations[dir]
+                                }
+                            }
+                        }) as BlockPermutation  )
+                    }
+                )
             }
         }
         
