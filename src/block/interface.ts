@@ -31,17 +31,21 @@ export type BlockPermutation = {
     components: Partial<MinecraftBlockComponent>
 };
 
+
+export type MenuCategory = {
+    category: string,
+    group: string,
+    is_hidden_in_commands?: boolean
+
+}
+
 /** Defines the expected structure of a Minecraft Block JSON */
 export interface MinecraftBlock {
     format_version: "1.21.100",
     "minecraft:block": {
         description: {
             identifier: string,
-            menu_category?: {
-                category: string,
-                group: string,
-                is_hidden_in_commands?: boolean
-            },
+            menu_category?: MenuCategory,
             states?: MinecraftBlockStates,
             traits?: Partial<MinecraftBlockTraits>,
         }

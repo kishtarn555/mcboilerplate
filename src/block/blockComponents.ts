@@ -49,6 +49,8 @@ type MCB_MapColor = {
     tint_method?:string
 }
 
+
+
 export type DefaultBlockComponent = {
     "minecraft:collision_box": MBC_Box | boolean
     "minecraft:selection_box": MBC_Box | boolean
@@ -59,6 +61,9 @@ export type DefaultBlockComponent = {
     "minecraft:material_instances": MCB_MaterialInstance
     "minecraft:transformation": MCB_Transformation
     "minecraft:map_color": MCB_MapColor | string
+    "minecraft:replaceable": {},
+    "minecraft:light_dampening": number,
+    "minecraft:light_emission": number,
 
 };
 

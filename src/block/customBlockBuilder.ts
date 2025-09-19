@@ -2,7 +2,7 @@ import type { ProjectManager } from "../project/project";
 import { MOString } from "../types/types";
 import { BlockComponentIdentifier, DefaultBlockComponent, MinecraftBlockComponent } from "./blockComponents";
 import { BlockState, BlockStateValue } from "./blockState";
-import { BlockPermutation, BlockTraitIdentifier, MinecraftBlock, MinecraftBlockStates, MinecraftBlockTraits } from "./interface";
+import { BlockPermutation, BlockTraitIdentifier, MenuCategory, MinecraftBlock, MinecraftBlockStates, MinecraftBlockTraits } from "./interface";
 import { BlockPlugin } from "./plugins/type";
 
 type BlockRegisterObserver = (block: CustomBlockBuilder, project: ProjectManager) => any;
@@ -14,6 +14,7 @@ export class CustomBlockBuilder {
     components: Partial<MinecraftBlockComponent>;
     blockState: MinecraftBlockStates
     traits: Partial<MinecraftBlockTraits>
+    menuCategory?: MenuCategory
     private blockRegistryObservers: BlockRegisterObserver[];
 
 
@@ -32,7 +33,8 @@ export class CustomBlockBuilder {
         const description = {
             identifier: this.identifier,
             traits: this.traits,
-            states: this.blockState
+            states: this.blockState,
+            menuCategory: this.menuCategory
         }
         return {
             format_version: "1.21.100",
