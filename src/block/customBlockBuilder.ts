@@ -37,7 +37,7 @@ export class CustomBlockBuilder {
             menuCategory: this.menuCategory
         }
         return {
-            format_version: "1.21.100",
+            format_version: "1.21.130",
             "minecraft:block": {
                 description: description,
                 components: this.components,

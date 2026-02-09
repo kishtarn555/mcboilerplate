@@ -41,7 +41,7 @@ export type MenuCategory = {
 
 /** Defines the expected structure of a Minecraft Block JSON */
 export interface MinecraftBlock {
-    format_version: "1.21.100",
+    format_version: "1.21.100" | "1.21.130",
     "minecraft:block": {
         description: {
             identifier: string,
