@@ -33,6 +33,8 @@ export type MCB_MaterialInstance = {
         face_dimming?: boolean
         isotropic?: boolean
         render_method?: "opaque" | "double_sided" | "blend" | "alpha_test" | "alpha_test_single_sided" | "blend_to_opaque" | "alpha_test_to_opaque" | "alpha_test_single_sided_to_opaque"
+        tint_method?: "birch_foliage" | "default_foliage" | "dry_foliage" | "evergreen_foliage" | "grass" | "water"
+        alpha_masked_tint?: boolean
     } | string
 }
 
